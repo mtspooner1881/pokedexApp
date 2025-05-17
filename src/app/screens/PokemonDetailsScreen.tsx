@@ -12,6 +12,7 @@ export function PokemonDetailsScreen({
   pokemonStats
 }: pokemonDetailsScreenInterface): React.JSX.Element {
   let audioFile;
+  window.scrollTo(0, 0);
   switch (pokemonStats.name) {
     case 'pikachu':
       audioFile = 'pikachu.mp3';
