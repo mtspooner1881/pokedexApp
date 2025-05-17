@@ -25,8 +25,8 @@ export function PokeClient() {
 
   
   return (
-    <div data-testid={'pokeclient-page'} className='flex-1'>
-      <div className='w-full bg-red-500 mx-auto max-w-screen-sm pr-10 pl-10 md:pr-25 md:pl-25 md:max-w-screen-md'>
+    <div data-testid={'pokeclient-page'} className='flex-1 grow min-h-full'>
+      <div className='w-full bg-red-500 mx-auto max-w-screen-sm pr-10 pl-10 md:pr-25 md:pl-25 md:max-w-screen-md min-h-full'>
         {!!data ? (
           <PokemonDetailsScreen 
             clearSelectedPokemon={clearSelectedPokemon}
