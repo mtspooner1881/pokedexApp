@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from "react";
-import { PokeBoxComponent } from '../sharedComponents/PokeBoxComponent';
+import { PokeBoxComponent } from './PokeBoxComponent';
 import { useGetPokemonPage } from '@/hooks/useGetPokemon';
 import { pokemonListItemType } from "@/app/types/pokemonSearchTypes";
 

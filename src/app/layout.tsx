@@ -3,11 +3,11 @@ import QueryProvider from './QueryProvider';
 import './globals.css';
 import { VT323 } from 'next/font/google';
 
-const nuntino = VT323({
+const vt323 = VT323({
   subsets: ['latin'], // Or other desired subsets
   display: 'swap', // Or 'block', 'fallback' depending on your needs
   weight: ['400'], // Or other desired weights
-  variable: '--font-nunito', // Optional: Use a CSS variable for better performance
+  variable: '--font-vt323', // Optional: Use a CSS variable for better performance
 });
 
 export const metadata: Metadata = {
@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
       <html lang="en">
-        <body className={`${nuntino.variable} antialiased`}>
+        <body className={`${vt323.variable} antialiased`}>
           <QueryProvider>
             {children}
           </QueryProvider>
