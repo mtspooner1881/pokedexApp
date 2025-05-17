@@ -1,4 +1,3 @@
-'use client'
 import React, { useEffect } from "react";
 import { PokemonInfoCard } from "@/components/pokemonDetailsCard/PokemonInfoCard";
 import { pokemonBasicStatsType } from '@/app/types/pokemonSearchTypes';
