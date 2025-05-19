@@ -8,7 +8,7 @@ interface pokemonTypeInterface {
 export function PokemonType({
   typeInfo
 }: pokemonTypeInterface): React.JSX.Element {
-  const typeList = typeInfo.map((type, index) => {
+  const typeList: React.JSX.Element[] = typeInfo.map((type, index) => {
     const typeName = type.type.name;
     return <li key={`${typeName}-${index}`}>Type: {typeName}</li>
   });

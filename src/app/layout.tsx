@@ -1,13 +1,14 @@
+import React from 'react';
 import type { Metadata } from 'next';
 import QueryProvider from './QueryProvider';
 import './globals.css';
 import { VT323 } from 'next/font/google';
 
 const vt323 = VT323({
-  subsets: ['latin'], // Or other desired subsets
-  display: 'swap', // Or 'block', 'fallback' depending on your needs
-  weight: ['400'], // Or other desired weights
-  variable: '--font-vt323', // Optional: Use a CSS variable for better performance
+  subsets: ['latin'],
+  display: 'swap', 
+  weight: ['400'],
+  variable: '--font-vt323'
 });
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}>): React.JSX.Element {
   return (
       <html lang="en">
         <body className={`${vt323.variable} antialiased`}>

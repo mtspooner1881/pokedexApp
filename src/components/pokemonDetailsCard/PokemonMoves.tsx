@@ -8,7 +8,7 @@ interface pokemonMovesInterface {
 export function PokemonMoves({
   movesInfo
 }: pokemonMovesInterface): React.JSX.Element {
-  const moveList = movesInfo.map((move, index) => {
+  const moveList: React.JSX.Element[] = movesInfo.map((move, index) => {
     const moveName = move.move.name;
     return <li className='capitalize flex-1' key={`${moveName}-${index}`}>{moveName}</li>
   });

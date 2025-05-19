@@ -1,4 +1,5 @@
 'use client'
+import React from 'react';
 import { useGetPokemon } from '@/hooks/useGetPokemon';
 import { PokedexScreen } from './PokedexScreen';
 import { PokemonDetailsScreen } from './PokemonDetailsScreen'; 
@@ -6,7 +7,7 @@ import { useState } from 'react';
 import { useKonami } from 'react-konami-code';
 import useSound from 'use-sound';
 
-export function PokeClient() {
+export function PokeClient(): React.JSX.Element {
   const [ selectedPokemon, setSelectedPokemon ] = useState<string>('');
   const { data } = useGetPokemon(selectedPokemon);
 
@@ -14,18 +15,18 @@ export function PokeClient() {
 
   useKonami(play);
 
-  function getSelectedPokemon(selectedPokemon: string) {
+  function getSelectedPokemon(selectedPokemon: string): void {
     setSelectedPokemon(selectedPokemon);
   }
 
-  function clearSelectedPokemon() {
+  function clearSelectedPokemon(): void {
     setSelectedPokemon('');
   }
 
 
   
   return (
-    <div data-testid={'pokeclient-page'} className='flex-1 grow min-h-full'>
+    <div data-testid={'pokeclient-page'} className='flex-1 min-h-full'>
       <div className='w-full bg-red-500 mx-auto max-w-screen-sm pr-10 pl-10 md:pr-25 md:pl-25 md:max-w-screen-md min-h-full'>
         {!!data ? (
           <PokemonDetailsScreen 

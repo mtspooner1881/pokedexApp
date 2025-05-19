@@ -2,7 +2,7 @@
 import React from "react";
 import { isServer, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-function makeQueryClient() {
+function makeQueryClient(): QueryClient {
   return new QueryClient({
     defaultOptions: {
       queries: {
@@ -14,7 +14,7 @@ function makeQueryClient() {
 
 let browserQueryClient: QueryClient | undefined = undefined;
 
-function getQueryClient() {
+function getQueryClient(): QueryClient {
   if (isServer) {
     return makeQueryClient();
   } else {
@@ -25,7 +25,7 @@ function getQueryClient() {
 
 export default function QueryProvider({ children }: { 
   children: React.ReactNode 
-}) {
+}): React.JSX.Element {
   const queryClient = getQueryClient();
 
   return (

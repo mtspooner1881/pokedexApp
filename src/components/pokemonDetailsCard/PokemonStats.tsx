@@ -8,7 +8,7 @@ interface pokemonStatsInterface {
 export function PokemonStats({
   statsInfo
 }: pokemonStatsInterface): React.JSX.Element {
-  const statList = statsInfo.map((stat, index) => {
+  const statList: React.JSX.Element[] = statsInfo.map((stat, index) => {
     const statName = stat.stat.name;
     const baseStat = stat.base_stat
     return <li className='uppercase' key={`${statName}-${index}`}>{statName}: {baseStat}</li>

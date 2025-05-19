@@ -7,7 +7,7 @@ interface pokeboxInterface {
 }
 
 export function PokeBoxComponent({ pokemon, getSelectedPokemon }: pokeboxInterface): React.JSX.Element {
-  function onClick(event: React.UIEvent) {
+  function onClick(event: React.UIEvent): void {
     const target = event.currentTarget as typeof event.currentTarget & {
       value: string;
     };

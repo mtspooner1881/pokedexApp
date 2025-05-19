@@ -9,7 +9,7 @@ export function PokemonAbilities({
   abilitiesInfo
 }: pokemonAbilitiesInterface): React.JSX.Element {
 
-  const statList = abilitiesInfo.map((ability, index) => {
+  const abilityList: React.JSX.Element[] = abilitiesInfo.map((ability, index) => {
     const abilityName = ability.ability.name;
     return <li className='capitalize' key={`${abilityName}-${index}`}>{abilityName}</li>
   });
@@ -20,7 +20,7 @@ export function PokemonAbilities({
         Abilities:
       </div>
       <ul data-testid='abilities-section-list' className='grid grid-cols-2 gap-1' >
-        {statList}
+        {abilityList}
       </ul>
     </section>
   );
