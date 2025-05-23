@@ -1,5 +1,6 @@
 import React from "react";
 import { pokemonListItemType } from "@/app/types/pokemonSearchTypes";
+import { useRouter, usePathname } from 'next/navigation';
 
 interface pokeboxInterface {
   pokemon: pokemonListItemType
@@ -7,11 +8,17 @@ interface pokeboxInterface {
 }
 
 export function PokeBoxComponent({ pokemon, getSelectedPokemon }: pokeboxInterface): React.JSX.Element {
+  const router = useRouter();
+  const pathname = usePathname();
   function onClick(event: React.UIEvent): void {
     const target = event.currentTarget as typeof event.currentTarget & {
       value: string;
     };
     const pokemon = target.value;
+    const fetchUrl = new URL(pokemon);
+    const path = fetchUrl.pathname;
+    const pokemonNumber = path.split('/').slice(-2, -1).pop();
+    router.push(`${pathname}?pokedexNumber=${pokemonNumber}`);
     getSelectedPokemon(pokemon);
   }
 
