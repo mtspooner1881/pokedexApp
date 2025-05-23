@@ -5,6 +5,18 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { pokemonDetailData, pokemonListData, pokemonListDataNewPage } from '@/testData/pokemonMockData';
 import React from 'react';
 import nock from 'nock';
+import { useSearchParams } from 'next/navigation';
+
+const getMock = jest.fn();
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: jest.fn()
+  }),
+  useSearchParams: () => ({
+    get: getMock
+  }),
+  usePathname: () => '/'
+}));
 
 describe('#PokeClient', () => {
   afterEach(() => {
@@ -104,7 +116,19 @@ describe('#PokeClient', () => {
     });
   });
 
-    it('should call the audio player when pikachu is selected', async () => {
+  it('should navigate to the correct pokemon when there is a pokedexNumber search param', async () => {
+    getMock.mockReturnValue('3');
+    nock('https://pokeapi.co/api/v2')
+      .get('/pokemon/3/')
+      .reply(200, pokemonDetailData);
+    render(<QueryClientProvider client={new QueryClient()}><PokeClient/></QueryClientProvider>);
+    await waitFor(() => {
+      const pokeclientPokemonDetails = screen.getByTestId('pokemonDetails-screen');
+      expect(pokeclientPokemonDetails).toBeInTheDocument();
+    });
+  });
+
+  it('should call the audio player when pikachu is selected', async () => {
     pokemonDetailData.name = 'pikachu';
     nock('https://pokeapi.co/api/v2')
       .get('/pokemon/?limit=60&offset=0')

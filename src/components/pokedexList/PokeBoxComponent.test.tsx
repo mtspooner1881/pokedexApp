@@ -3,6 +3,13 @@ import { pokemonListData } from "@/testData/pokemonMockData";
 import '@testing-library/jest-dom';
 import { PokeBoxComponent } from "./PokeBoxComponent";
 
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: jest.fn()
+  }),
+  usePathname: () => '/'
+}));
+
 describe('#PokeBoxComponent', () => {
   it('should render correctly', () => {
     render(<PokeBoxComponent pokemon={pokemonListData.results[0]} getSelectedPokemon={jest.fn()} />);
