@@ -5,8 +5,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { pokemonDetailData, pokemonListData, pokemonListDataNewPage } from '@/testData/pokemonMockData';
 import React from 'react';
 import nock from 'nock';
-import { useSearchParams } from 'next/navigation';
-
+window.scrollTo = jest.fn();
 const getMock = jest.fn();
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
@@ -21,13 +20,22 @@ jest.mock('next/navigation', () => ({
 describe('#PokeClient', () => {
   afterEach(() => {
     nock.cleanAll();
+    jest.resetAllMocks();
   });
-  it('should render pokedex screen if there is no pokemon data', () => {
+
+  afterAll(() => {
+    jest.clearAllMocks();
+    nock.cleanAll();
+    nock.restore();
+  });
+  it('should render pokedex screen if there is no pokemon data', async() => {
     render(<QueryClientProvider client={new QueryClient()}><PokeClient/></QueryClientProvider>);
-    const pokeclient = screen.getByTestId('pokeclient-page');
-    const pokeclientPokedex = screen.getByTestId('pokedex-screen');
-    expect(pokeclient).toBeInTheDocument();
-    expect(pokeclientPokedex).toBeInTheDocument();
+    await waitFor(() => {
+      const pokeclient = screen.getByTestId('pokeclient-page');
+      const pokeclientPokedex = screen.getByTestId('pokedex-screen');
+      expect(pokeclient).toBeInTheDocument();
+      expect(pokeclientPokedex).toBeInTheDocument();
+    });
   });
 
   it('should render pokemon details screen if there is pokemon data', async () => {
@@ -38,10 +46,13 @@ describe('#PokeClient', () => {
       .get('/pokemon/ditto')
       .reply(200, pokemonDetailData);
     render(<QueryClientProvider client={new QueryClient()}><PokeClient/></QueryClientProvider>);
-    const pokeclient = screen.getByTestId('pokeclient-page');
-    expect(pokeclient).toBeInTheDocument();
-    const pokedexList = screen.getByTestId('pokedexlist-component-list');
     await waitFor(() => {
+      const pokeclient = screen.getByTestId('pokeclient-page');
+      expect(pokeclient).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      const pokedexList = screen.getByTestId('pokedexlist-component-list');
       const dittoButton = pokedexList.querySelector('li:first-child button')!;
       expect(dittoButton).toBeInTheDocument();
       fireEvent.click(dittoButton);
@@ -61,11 +72,13 @@ describe('#PokeClient', () => {
       .get('/pokemon/ditto')
       .reply(200, pokemonDetailData);
     render(<QueryClientProvider client={new QueryClient()}><PokeClient/></QueryClientProvider>);
-    const pokeclient = screen.getByTestId('pokeclient-page');
-    expect(pokeclient).toBeInTheDocument();
-    const pokedexList = screen.getByTestId('pokedexlist-component-list');
+    await waitFor(() => {
+      const pokeclient = screen.getByTestId('pokeclient-page');
+      expect(pokeclient).toBeInTheDocument();
+    });
 
     await waitFor(() => {
+      const pokedexList = screen.getByTestId('pokedexlist-component-list');
       const dittoButton = pokedexList.querySelector('li:first-child button')!;
       expect(dittoButton).toBeInTheDocument();
       fireEvent.click(dittoButton);
@@ -93,10 +106,13 @@ describe('#PokeClient', () => {
       .get('/pokemon/?limit=60&offset=1')
       .reply(200, pokemonListDataNewPage);
     render(<QueryClientProvider client={new QueryClient()}><PokeClient/></QueryClientProvider>);
-    const pokeclient = screen.getByTestId('pokeclient-page');
-    expect(pokeclient).toBeInTheDocument();
-    const pokedexList = screen.getByTestId('pokedexlist-component-list');
     await waitFor(() => {
+      const pokeclient = screen.getByTestId('pokeclient-page');
+      expect(pokeclient).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      const pokedexList = screen.getByTestId('pokedexlist-component-list');
       const ditto = pokedexList.querySelector('li:first-child div div')?.innerHTML;
       const nextButton = screen.getByTestId('pagination-next-button');
       expect(ditto).toBe('ditto');
@@ -104,6 +120,7 @@ describe('#PokeClient', () => {
     });
 
     await waitFor(() => {
+      const pokedexList = screen.getByTestId('pokedexlist-component-list');
       const charmander = pokedexList.querySelector('li:first-child div div')?.innerHTML;
       const previousButton = screen.getByTestId('pagination-previous-button');
       expect(charmander).toBe('charmander');
@@ -111,6 +128,7 @@ describe('#PokeClient', () => {
     });
 
     await waitFor(() => {
+      const pokedexList = screen.getByTestId('pokedexlist-component-list');
       const ditto = pokedexList.querySelector('li:first-child div div')?.innerHTML;
       expect(ditto).toBe('ditto');
     });
@@ -137,10 +155,12 @@ describe('#PokeClient', () => {
       .get('/pokemon/pikachu')
       .reply(200, pokemonDetailData);
     render(<QueryClientProvider client={new QueryClient()}><PokeClient/></QueryClientProvider>);
-    const pokeclient = screen.getByTestId('pokeclient-page');
-    expect(pokeclient).toBeInTheDocument();
-    const pokedexList = screen.getByTestId('pokedexlist-component-list');
     await waitFor(() => {
+      const pokeclient = screen.getByTestId('pokeclient-page');
+      expect(pokeclient).toBeInTheDocument();
+    });
+    await waitFor(() => {
+      const pokedexList = screen.getByTestId('pokedexlist-component-list');
       const pickachuButton = pokedexList.querySelectorAll('li')[1].querySelector('button')!;
       expect(pickachuButton).toBeInTheDocument();
       fireEvent.click(pickachuButton);
@@ -165,13 +185,15 @@ describe('#PokeClient', () => {
       .get('/pokemon/pikachu')
       .reply(200, pokemonDetailData);
     render(<QueryClientProvider client={new QueryClient()}><PokeClient/></QueryClientProvider>);
-    const pokeclient = screen.getByTestId('pokeclient-page');
-    expect(pokeclient).toBeInTheDocument();
-    const pokedexList = screen.getByTestId('pokedexlist-component-list');
     await waitFor(() => {
-      const pickachuButton = pokedexList.querySelectorAll('li')[1].querySelector('button')!;
-      expect(pickachuButton).toBeInTheDocument();
-      fireEvent.click(pickachuButton);
+      const pokeclient = screen.getByTestId('pokeclient-page');
+      expect(pokeclient).toBeInTheDocument();
+    });
+    await waitFor(() => {
+      const pokedexList = screen.getByTestId('pokedexlist-component-list');
+      const psyduckButton = pokedexList.querySelectorAll('li')[1].querySelector('button')!;
+      expect(psyduckButton).toBeInTheDocument();
+      fireEvent.click(psyduckButton);
     });
 
     await waitFor(() => {
@@ -184,7 +206,7 @@ describe('#PokeClient', () => {
     });
   });
   
-  it('should call the audio player when psyduck is selected', async () => {
+  it('should call the audio player when meowth is selected', async () => {
     pokemonDetailData.name = 'meowth';
     nock('https://pokeapi.co/api/v2')
       .get('/pokemon/?limit=60&offset=0')
@@ -193,13 +215,16 @@ describe('#PokeClient', () => {
       .get('/pokemon/pikachu')
       .reply(200, pokemonDetailData);
     render(<QueryClientProvider client={new QueryClient()}><PokeClient/></QueryClientProvider>);
-    const pokeclient = screen.getByTestId('pokeclient-page');
-    expect(pokeclient).toBeInTheDocument();
-    const pokedexList = screen.getByTestId('pokedexlist-component-list');
     await waitFor(() => {
-      const pickachuButton = pokedexList.querySelectorAll('li')[1].querySelector('button')!;
-      expect(pickachuButton).toBeInTheDocument();
-      fireEvent.click(pickachuButton);
+      const pokeclient = screen.getByTestId('pokeclient-page');
+      expect(pokeclient).toBeInTheDocument();
+    });
+
+    await waitFor(() => {
+      const pokedexList = screen.getByTestId('pokedexlist-component-list');
+      const meowthButton = pokedexList.querySelectorAll('li')[1].querySelector('button')!;
+      expect(meowthButton).toBeInTheDocument();
+      fireEvent.click(meowthButton);
     });
 
     await waitFor(() => {
@@ -211,4 +236,16 @@ describe('#PokeClient', () => {
       expect(pokeclientPokemonDetails).toBeInTheDocument();
     });
   });
+
+  // it('should render error correctly', async () => {
+  //   nock('https://pokeapi.co/api/v2')
+  //     .get('/pokemon/?limit=60&offset=0')
+  //     .delay(50)
+  //     .replyWithError({ message: 'Something went wrong', code: 'ERROR_CODE', metadata: { details: '...' } });
+  //   render(<QueryClientProvider client={new QueryClient()}><PokeClient/></QueryClientProvider>);
+  //   await waitFor(() => {
+  //     const errorScreen = screen.getByTestId('systemInfoCard-content-error');
+  //     expect(errorScreen.innerHTML).toContain('Catching Pokemon');
+  //   }, { interval: 10 });
+  // });
 });

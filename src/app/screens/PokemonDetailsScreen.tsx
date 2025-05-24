@@ -37,7 +37,12 @@ export function PokemonDetailsScreen({
 
   return (
     <div data-testid={'pokemonDetails-screen'} className='flex-1' >
-      <button role='button' data-testid={'pokemonDetails-screen-backButton'} className='text-xl cursor-pointer' onClick={() => clearSelectedPokemon()}>Back to Pokedex &gt;</button>
+      <button role='button' data-testid={'pokemonDetails-screen-backButton'} className='text-3xl cursor-pointer' onClick={() => clearSelectedPokemon()}>Back to Pokedex &gt;</button>
+      <div className='flex content-center my-3'>
+        <div className='flex-1 capitalize bg-white text-gray-500 border border-gray-500 outline-white outline-4 content-center'>
+          <h1 className='text-4xl text-center'>{pokemonStats.name}</h1>
+        </div>
+      </div>
       <PokemonInfoCard pokemonStats={pokemonStats}/>
     </div>
   );

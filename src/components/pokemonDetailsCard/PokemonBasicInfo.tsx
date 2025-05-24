@@ -15,9 +15,9 @@ export function PokemonBasicInfo({
         <div className='flex-1' data-testid='basicInfo-section-id'>
           Number: {basicInfo.id}
         </div>
-        <div className='flex-1' data-testid='basicInfo-section-name'>
+        <h2 className='flex-1' data-testid='basicInfo-section-name'>
           Name: {basicInfo.name}
-        </div>
+        </h2>
       </div>
       <div className='flex md:text-2xl'>
         <div className='border border-gray-500 m-1'>
