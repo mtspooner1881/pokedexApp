@@ -57,17 +57,17 @@ export function PokedexListComponent({
 
   return (
     <div data-testid='pokedexlist-component' className='flex-1' >
-      <div className='flex-1 capitalize bg-white text-gray-500 border border-gray-500 outline-white outline-4 content-center my-5'>
-        <h1 className='text-4xl text-center'>Pokedex</h1>
+      <div className='flex-1 capitalize bg-white text-gray-800 border border-gray-500 outline-white outline-4 content-center mt-15 mb-20 p-3 rounded-lg'>
+        <h1 className='text-6xl text-center text-shadow-[0_1px_0_rgba(255_255_255_.3), 0_-1px_0_rgba(0_0_0_.7)]'>Pokedex</h1>
       </div>
-      <ul data-testid='pokedexlist-component-list' className='flex-1 grid md:grid-cols-2 lg:grid-cols-3 gap-2'>
+      <ul data-testid='pokedexlist-component-list' className='flex-1 grid md:grid-cols-2 lg:grid-cols-3 gap-5'>
           {pokemonListItems}
       </ul>
       <div className='flex text-3xl my-5'>
         {!!data?.previous && 
           <button 
             role='button' 
-            className='cursor-pointer flex-1'
+            className='cursor-pointer flex-1 focus:text-blue-500 hover:text-blue-500'
             data-testid='pagination-previous-button' 
             onClick={onPrevClick}>
               &lt; Previous Page
@@ -76,7 +76,7 @@ export function PokedexListComponent({
         {!!data?.next && 
           <button 
             role='button' 
-            className='cursor-pointer flex-1'
+            className='cursor-pointer flex-1 focus:text-blue-500 hover:text-blue-500'
             data-testid='pagination-next-button' 
             onClick={onNextClick}>
               Next Page &gt;

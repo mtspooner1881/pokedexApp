@@ -112,25 +112,22 @@ describe('#PokeClient', () => {
     });
 
     await waitFor(() => {
-      const pokedexList = screen.getByTestId('pokedexlist-component-list');
-      const ditto = pokedexList.querySelector('li:first-child div div')?.innerHTML;
+      const ditto = screen.getByText('ditto');
       const nextButton = screen.getByTestId('pagination-next-button');
-      expect(ditto).toBe('ditto');
+      expect(ditto).toBeInTheDocument();
       fireEvent.click(nextButton);
     });
 
     await waitFor(() => {
-      const pokedexList = screen.getByTestId('pokedexlist-component-list');
-      const charmander = pokedexList.querySelector('li:first-child div div')?.innerHTML;
+      const charmander = screen.getByText('charmander');
       const previousButton = screen.getByTestId('pagination-previous-button');
-      expect(charmander).toBe('charmander');
+      expect(charmander).toBeInTheDocument();;
       fireEvent.click(previousButton);
     });
 
     await waitFor(() => {
-      const pokedexList = screen.getByTestId('pokedexlist-component-list');
-      const ditto = pokedexList.querySelector('li:first-child div div')?.innerHTML;
-      expect(ditto).toBe('ditto');
+      const ditto = screen.getByText('ditto');
+      expect(ditto).toBeInTheDocument();
     });
   });
 
