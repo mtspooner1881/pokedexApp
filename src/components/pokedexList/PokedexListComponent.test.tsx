@@ -13,7 +13,15 @@ jest.mock('next/navigation', () => ({
   usePathname: () => '/'
 }));
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      gcTime: 0,
+      staleTime: 0
+    }
+  }
+});
 const wrapper = ({ children }: { children: React.ReactNode }) => (
   <QueryClientProvider client={queryClient}>
     {children}
@@ -53,7 +61,7 @@ describe('#PokedexListComponent', () => {
     render(<PokedexListComponent getSelectedPokemon={jest.fn()} />, {wrapper});
     await waitFor(() => {
       const errorScreen = screen.getByTestId('systemInfoCard-content-error');
-      expect(errorScreen.innerHTML).toContain('Catching Pokemon');
+      expect(errorScreen.innerHTML).toContain('Cannot find any Pokemon');
     });
   });
 });

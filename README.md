@@ -5,7 +5,8 @@ the available Pokemon, and click on them to get information about the selected P
 
 ## Getting Started
 
-This project prefers pnpm, for full instructions on how to install go the the [Pnpm](https://pnpm.io/installation) website
+This project prefers pnpm, for full instructions on how to install go the the [Pnpm](https://pnpm.io/installation) website.
+You will also need Node version 23.9.0 installed via Pnpm or [Node](https://nodejs.org/en/download)
 
 First, install the node modules required for the project,
 

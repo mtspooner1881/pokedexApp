@@ -234,15 +234,23 @@ describe('#PokeClient', () => {
     });
   });
 
-  // it('should render error correctly', async () => {
-  //   nock('https://pokeapi.co/api/v2')
-  //     .get('/pokemon/?limit=60&offset=0')
-  //     .delay(50)
-  //     .replyWithError({ message: 'Something went wrong', code: 'ERROR_CODE', metadata: { details: '...' } });
-  //   render(<QueryClientProvider client={new QueryClient()}><PokeClient/></QueryClientProvider>);
-  //   await waitFor(() => {
-  //     const errorScreen = screen.getByTestId('systemInfoCard-content-error');
-  //     expect(errorScreen.innerHTML).toContain('Catching Pokemon');
-  //   }, { interval: 10 });
-  // });
+  it('should render error correctly', async () => {
+    getMock.mockReturnValue('3');
+    nock('https://pokeapi.co/api/v2')
+      .get('/pokemon/3/')
+      .replyWithError({ message: 'Server ERROR' });
+    render(<QueryClientProvider client={new QueryClient({
+        defaultOptions: {
+          queries: {
+            retry: false,
+            gcTime: 0,
+            staleTime: 0
+          }
+        }
+    })}><PokeClient/></QueryClientProvider>);
+    await waitFor(() => {
+      const errorScreen = screen.getByTestId('systemInfoCard-content-error');
+      expect(errorScreen.innerHTML).toContain('Cannot find any Pokemon');
+    });
+  });
 });
