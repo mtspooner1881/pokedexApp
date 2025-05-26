@@ -6,11 +6,15 @@ import { pokemonListData } from "@/testData/pokemonMockData";
 import { PokedexListComponent } from "./PokedexListComponent";
 import nock from 'nock';
 
+const getMock = jest.fn();
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
     push: jest.fn()
   }),
-  usePathname: () => '/'
+  usePathname: () => '/',
+  useSearchParams: () => ({
+    get: getMock
+  })
 }));
 
 const queryClient = new QueryClient({
@@ -44,6 +48,22 @@ describe('#PokedexListComponent', () => {
       .once()
       .reply(200, pokemonListData);
     render(<PokedexListComponent getSelectedPokemon={jest.fn()} />, {wrapper});
+    const loadingScreen = screen.getByTestId('systemInfoCard-content-loading');
+    expect(loadingScreen.innerHTML).toContain('Catching Pokemon');
+    await waitFor(() => {
+      const pokemonList = screen.getByTestId('pokedexlist-component-list');
+      expect(pokemonList).toBeInTheDocument();
+      const pokemonListItems = pokemonList.querySelectorAll('li');
+      expect(pokemonListItems.length).toBe(3);
+    });
+  });
+
+  it('should go to the correct page if there is a pagenumber', async () => {
+    nock('https://pokeapi.co/api/v2')
+      .get('/pokemon/?limit=60&offset=60')
+      .once()
+      .reply(200, pokemonListData);
+    render(<PokedexListComponent getSelectedPokemon={jest.fn()} pageNumber={60} />, {wrapper});
     const loadingScreen = screen.getByTestId('systemInfoCard-content-loading');
     expect(loadingScreen.innerHTML).toContain('Catching Pokemon');
     await waitFor(() => {

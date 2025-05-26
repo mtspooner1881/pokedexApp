@@ -3,11 +3,15 @@ import { pokemonListData } from "@/testData/pokemonMockData";
 import '@testing-library/jest-dom';
 import { PokeBoxComponent } from "./PokeBoxComponent";
 
+const getMock = jest.fn();
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
     push: jest.fn()
   }),
-  usePathname: () => '/'
+  usePathname: () => '/',
+  useSearchParams: () => ({
+    get: getMock
+  })
 }));
 
 describe('#PokeBoxComponent', () => {

@@ -3,13 +3,14 @@ import { PokedexListComponent } from "@/components/pokedexList/PokedexListCompon
 
 interface pokedexScreenInterface {
   getSelectedPokemon: (selctedPokemon: string) => void;
+  pageNumber?: number;
 }
 
-export function PokedexScreen({ getSelectedPokemon }: pokedexScreenInterface): React.JSX.Element {
+export function PokedexScreen({ getSelectedPokemon, pageNumber }: pokedexScreenInterface): React.JSX.Element {
 
   return (
     <div data-testid={'pokedex-screen'} className='flex-1' >
-      <PokedexListComponent getSelectedPokemon={getSelectedPokemon} />
+      <PokedexListComponent getSelectedPokemon={getSelectedPokemon} pageNumber={pageNumber} />
     </div>
   );
 }

@@ -17,11 +17,11 @@ export function PokeClient(): React.JSX.Element {
   const searchParams = useSearchParams();
   const [play] = useSound('/01_16.mp3', { volume: 0.25 });
   const sharedPokedexNumber = searchParams.get('pokedexNumber');
+  const pokedexPage = searchParams.get('offset');
 
   useEffect(() => {
     loadSharedPokemon();
   }, []);
-
   useKonami(play);
 
   function getSelectedPokemon(selectedPokemon: string): void {
@@ -29,7 +29,9 @@ export function PokeClient(): React.JSX.Element {
   }
 
   function clearSelectedPokemon(): void {
-    router.push(pathname);
+    const newSearchParams = new URLSearchParams(searchParams.toString());
+    newSearchParams.delete('pokedexNumber');
+    router.push(`${pathname}?${newSearchParams}`);
     setSelectedPokemon('');
   }
 
@@ -38,6 +40,15 @@ export function PokeClient(): React.JSX.Element {
       const sharedPokemon = `https://pokeapi.co/api/v2/pokemon/${sharedPokedexNumber}/`
       setSelectedPokemon(sharedPokemon);
     }
+  }
+
+  function goToPokedexPage(): number | undefined {
+    console.log(pokedexPage);
+    if (sharedPokedexNumber || !pokedexPage) {
+      return;
+    }
+    console.log(pokedexPage);
+    return parseInt(pokedexPage);
   }
 
   if(isLoading) {
@@ -67,6 +78,7 @@ export function PokeClient(): React.JSX.Element {
         ) : (
           <PokedexScreen
             getSelectedPokemon={getSelectedPokemon}
+            pageNumber={goToPokedexPage()}
           />
         )}
       </div>

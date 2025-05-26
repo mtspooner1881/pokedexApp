@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { pokemonListItemType } from "@/app/types/pokemonSearchTypes";
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 interface pokeboxInterface {
   pokemon: pokemonListItemType
@@ -10,6 +10,7 @@ interface pokeboxInterface {
 export function PokeBoxComponent({ pokemon, getSelectedPokemon }: pokeboxInterface): React.JSX.Element {
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   function onClick(event: React.UIEvent): void {
     const target = event.currentTarget as typeof event.currentTarget & {
       value: string;
@@ -18,9 +19,17 @@ export function PokeBoxComponent({ pokemon, getSelectedPokemon }: pokeboxInterfa
     const fetchUrl = new URL(pokemon);
     const path = fetchUrl.pathname;
     const pokemonNumber = path.split('/').slice(-2, -1).pop();
-    router.push(`${pathname}?pokedexNumber=${pokemonNumber}`);
-    getSelectedPokemon(pokemon);
+    if (pokemonNumber) {
+      router.push(pathname + '?' + createQueryString('pokedexNumber', pokemonNumber));
+      getSelectedPokemon(pokemon);
+    } 
   }
+
+  const createQueryString = useCallback(( paramName: string, paramValue: string ) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(paramName, paramValue);
+    return params.toString();
+  }, [searchParams]);
 
   return (
     <section data-testid='pokeBox-component' className='flex bg-white border-10 border-t-gray-100 border-b-gray-500 border-r-gray-300 border-l-gray-300 rounded-lg outline outline-gray-800'>

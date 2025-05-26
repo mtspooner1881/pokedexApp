@@ -1,18 +1,25 @@
 'use client'
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { PokeBoxComponent } from './PokeBoxComponent';
 import { SystemInfoCard } from "../sharedComponents/SystemInfoCard";
 import { useGetPokemonPage } from '@/hooks/useGetPokemon';
 import { pokemonListItemType } from "@/app/types/pokemonSearchTypes";
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 interface pokedexListInterface {
   getSelectedPokemon: (selctedPokemon: string) => void;
+  pageNumber?: number;
 }
 
 export function PokedexListComponent({
   getSelectedPokemon,
+  pageNumber
 }: pokedexListInterface): React.JSX.Element {
-  const [currentPage, setCurrentPage] = useState<number>(0);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const currentSelectedPage = pageNumber ? pageNumber : 0;
+  const [currentPage, setCurrentPage] = useState<number>(currentSelectedPage);
   const { data, isLoading, isError } = useGetPokemonPage(currentPage);
   const pokemonListItems = data?.results.map((pokemonResults: pokemonListItemType, index: number) => {
     const pokemon = pokemonResults;
@@ -22,6 +29,12 @@ export function PokedexListComponent({
       </li>
     );
   });
+
+  useEffect(() => {
+    if(pageNumber) {
+      setCurrentPage(pageNumber);
+    }
+  }, [pageNumber]);
 
   function onPrevClick(): void {
     const prevUrl = data.previous; 
@@ -36,8 +49,15 @@ export function PokedexListComponent({
   function onNavigationClick(url: string): void {
     const pageUrl = new URL(url); 
     const newPage = Number(pageUrl.searchParams.get('offset'));
+    router.push(pathname + '?' + createQueryString('offset', newPage.toString()));
     setCurrentPage(newPage);
   }
+
+  const createQueryString = useCallback(( paramName: string, paramValue: string ) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set(paramName, paramValue);
+    return params.toString();
+  }, [searchParams]);
 
   if(isLoading) {
     return (
