@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import type { Metadata } from 'next';
 import QueryProvider from './QueryProvider';
 import './globals.css';
@@ -22,6 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>): React.JSX.Element {
   return (
+    <Suspense>
       <html lang="en">
         <body className={`${vt323.variable} antialiased`}>
           <QueryProvider>
@@ -29,5 +30,6 @@ export default function RootLayout({
           </QueryProvider>
         </body>
       </html>
+    </Suspense>
   );
 }

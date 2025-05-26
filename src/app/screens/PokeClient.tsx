@@ -42,14 +42,12 @@ export function PokeClient(): React.JSX.Element {
     }
   }
 
-  function goToPokedexPage(): number | undefined {
-    console.log(pokedexPage);
-    if (sharedPokedexNumber || !pokedexPage) {
-      return;
-    }
-    console.log(pokedexPage);
-    return parseInt(pokedexPage);
-  }
+  // function goToPokedexPage(): string | undefined {
+  //   if (sharedPokedexNumber || !pokedexPage) {
+  //     return;
+  //   }
+  //   return pokedexPage;
+  // }
 
   if(isLoading) {
     return (
@@ -78,7 +76,7 @@ export function PokeClient(): React.JSX.Element {
         ) : (
           <PokedexScreen
             getSelectedPokemon={getSelectedPokemon}
-            pageNumber={goToPokedexPage()}
+            pageNumber={pokedexPage}
           />
         )}
       </div>

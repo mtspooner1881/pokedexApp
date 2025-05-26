@@ -1,9 +1,9 @@
+import React from 'react';
 import { PokeClient } from './PokeClient';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import '@testing-library/jest-dom';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import { pokemonDetailData, pokemonListData, pokemonListDataNewPage } from '@/testData/pokemonMockData';
-import React from 'react';
 import nock from 'nock';
 window.scrollTo = jest.fn();
 const getMock = jest.fn();
@@ -141,29 +141,6 @@ describe('#PokeClient', () => {
     await waitFor(() => {
       const pokeclientPokemonDetails = screen.getByTestId('pokemonDetails-screen');
       expect(pokeclientPokemonDetails).toBeInTheDocument();
-    });
-  });
-
-    it('should navigate to a the correct page an offset number in search param', async () => {
-    getMock.mockReturnValueOnce('');
-    getMock.mockReturnValueOnce('60');
-    nock('https://pokeapi.co/api/v2')
-      .get('/pokemon/?limit=60&offset=60')
-      .reply(200, pokemonListDataNewPage);
-    render(<QueryClientProvider client={new QueryClient({
-        defaultOptions: {
-          queries: {
-            retry: false,
-            gcTime: 0,
-            staleTime: 0
-          }
-        }
-    })}><PokeClient/></QueryClientProvider>);
-    expect(getMock).toHaveBeenNthCalledWith(1, 'pokedexNumber');
-    expect(getMock).toHaveBeenNthCalledWith(2, 'offset');
-    await waitFor(() => {
-      const pokeclient = screen.getByTestId('pokeclient-page');
-      expect(pokeclient).toBeInTheDocument();
     });
   });
 

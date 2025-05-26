@@ -3,7 +3,7 @@ import { PokedexListComponent } from "@/components/pokedexList/PokedexListCompon
 
 interface pokedexScreenInterface {
   getSelectedPokemon: (selctedPokemon: string) => void;
-  pageNumber?: number;
+  pageNumber?: string | null;
 }
 
 export function PokedexScreen({ getSelectedPokemon, pageNumber }: pokedexScreenInterface): React.JSX.Element {

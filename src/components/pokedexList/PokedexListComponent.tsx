@@ -8,7 +8,7 @@ import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 
 interface pokedexListInterface {
   getSelectedPokemon: (selctedPokemon: string) => void;
-  pageNumber?: number;
+  pageNumber?: string | null;
 }
 
 export function PokedexListComponent({
@@ -18,7 +18,7 @@ export function PokedexListComponent({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const currentSelectedPage = pageNumber ? pageNumber : 0;
+  const currentSelectedPage = (pageNumber && pageNumber !== null) ? parseInt(pageNumber) : 0;
   const [currentPage, setCurrentPage] = useState<number>(currentSelectedPage);
   const { data, isLoading, isError } = useGetPokemonPage(currentPage);
   const pokemonListItems = data?.results.map((pokemonResults: pokemonListItemType, index: number) => {
@@ -31,10 +31,10 @@ export function PokedexListComponent({
   });
 
   useEffect(() => {
-    if(pageNumber) {
-      setCurrentPage(pageNumber);
+    if(pageNumber && pageNumber !== null) {
+      setCurrentPage(currentSelectedPage);
     }
-  }, [pageNumber]);
+  }, [currentSelectedPage]);
 
   function onPrevClick(): void {
     const prevUrl = data.previous; 
